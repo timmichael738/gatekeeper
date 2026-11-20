@@ -1,0 +1,37 @@
+# Gatekeeper configuration. Environment variables PORT and REDIS_URL override values here.
+server:
+  host: 0.0.0.0
+  port: 8080
+  trustProxy: false
+
+store:
+  type: memory # "memory" for a single instance, "redis" to share limits across replicas
+  failOpen: true
+
+# Generate entries with: npm run hash-key -- <name>
+# The demo key below is "demo-key-change-me" — replace it before deploying.
+apiKeys:
+  - name: demo
+    sha256: 090d1548c9d65f413a1a2c828a0bee3a7ae02d2137caf51e6029e6c3cb1f1fa4
+
+routes:
+  # Public endpoint, limited per client IP: bursts of 20, sustained 5 req/s.
+  - name: public
+    prefix: /public
+    upstream: http://upstream:9000
+    rewritePrefix: /
+    rateLimit:
+      algorithm: token-bucket
+      capacity: 20
+      refillPerSecond: 5
+
+  # Partner API, limited per API key: 100 requests per rolling minute.
+  - name: partner
+    prefix: /partner
+    upstream: http://upstream:9000
+    rewritePrefix: /
+    auth: api-key
+    rateLimit:
+      algorithm: sliding-window
+      limit: 100
+      windowMs: 60000
