@@ -1,0 +1,55 @@
+{
+  "name": "gatekeeper",
+  "version": "1.0.0",
+  "description": "A lightweight, horizontally scalable API gateway with pluggable rate limiting (token bucket & sliding window), API-key auth and Prometheus metrics.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Michael Timothy",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timmichael738/gatekeeper.git"
+  },
+  "keywords": [
+    "api-gateway",
+    "rate-limiter",
+    "token-bucket",
+    "sliding-window",
+    "redis",
+    "fastify",
+    "prometheus"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "hash-key": "tsx scripts/hash-key.ts"
+  },
+  "dependencies": {
+    "@fastify/http-proxy": "^11.6.10",
+    "fastify": "^5.12.8",
+    "ioredis": "^6.0.0",
+    "prom-client": "^15.1.3",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.15.0",
+    "prettier": "^3.10.1",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.73.0",
+    "vitest": "^4.1.12"
+  }
+}
